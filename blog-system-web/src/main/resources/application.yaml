@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: A-Blog-System
+server:
+  port: 9898
+
+

@@ -12,8 +12,8 @@
     <artifactId>blog-system-web</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -23,17 +23,16 @@
             <artifactId>blog-system-entity</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!--config for yaml-->
+        <dependency>
+            <groupId>cc.lq</groupId>
+            <artifactId>blog-system-component</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--test-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--jasypt-->
-        <dependency>
-            <groupId>com.github.ulisesbocchio</groupId>
-            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
