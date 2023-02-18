@@ -38,7 +38,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
         </dependency>
-
         <!--Velocity for mpg-->
         <dependency>
             <groupId>org.apache.velocity</groupId>

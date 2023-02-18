@@ -38,11 +38,6 @@
             <scope>test</scope>
         </dependency>
 
-
-
-
-
-
         <!--mysql driver-->
         <dependency>
             <groupId>com.mysql</groupId>
