@@ -2,6 +2,7 @@ package cc.lq.blog.system.mapper;
 
 import cc.lq.blog.system.entity.UserDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Qi Li
  * @since 2023-02-17
  */
+@Mapper
 public interface UserMapper extends BaseMapper<UserDO> {
 
 }

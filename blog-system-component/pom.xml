@@ -50,6 +50,13 @@
             <artifactId>HikariCP</artifactId>
         </dependency>
 
+        <!--H2 DB for test-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--config for yaml-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
