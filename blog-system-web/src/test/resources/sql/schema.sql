@@ -51,7 +51,6 @@ CREATE TABLE `blog_article_tag`
     `tag_id`      bigint          NOT NULL COMMENT '标签id',
     `create_time` datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted`  tinyint(1)      NOT NULL DEFAULT '0' COMMENT '删除标识 1-是 0-否',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_article_tag` (`article_id`, `tag_id`) /*!80000 INVISIBLE */
 ) ENGINE = InnoDB

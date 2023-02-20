@@ -9,7 +9,6 @@
         <result column="update_time" property="updateTime" />
         <result column="article_id" property="articleId" />
         <result column="tag_id" property="tagId" />
-        <result column="is_deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -17,7 +16,7 @@
         id,
         create_time,
         update_time,
-        article_id, tag_id, is_deleted
+        article_id, tag_id
     </sql>
 
 </mapper>

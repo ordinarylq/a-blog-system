@@ -25,13 +25,6 @@ public class ArticleTagDO extends BaseEntity {
      */
     private Long tagId;
 
-    /**
-     * 删除标识 1-是 0-否
-     */
-    @TableField("is_deleted")
-    @TableLogic
-    private Boolean deleted;
-
     public Long getArticleId() {
         return articleId;
     }
@@ -48,21 +41,12 @@ public class ArticleTagDO extends BaseEntity {
         this.tagId = tagId;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public String toString() {
         return "ArticleTagDO{" +
                 super.toString() +
                 "articleId = " + articleId +
                 ", tagId = " + tagId +
-                ", deleted = " + deleted +
                 "}";
     }
 }
