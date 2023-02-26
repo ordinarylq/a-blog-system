@@ -59,6 +59,17 @@ public interface ArticleService extends IService<ArticleDO> {
      * @param pageSize 页面大小
      * @return 一页数据
      */
-    Page<ArticleDO> getArticleVOPage(Long pageNum, Long pageSize);
+    Page<ArticleDO> getArticlePage(Long pageNum, Long pageSize);
 
+
+    /**
+     * <p>
+     *     根据分类并分页获取文章
+     * </p>
+     * @param categoryId 分类id
+     * @param pageNum 当前页码
+     * @param pageSize 页面大小
+     * @return 一页数据
+     */
+    Page<ArticleDO> getArticlePage(Long categoryId, Long pageNum, Long pageSize);
 }

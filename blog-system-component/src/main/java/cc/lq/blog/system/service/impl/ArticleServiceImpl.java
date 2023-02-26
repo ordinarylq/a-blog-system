@@ -39,7 +39,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
 
     private ApplicationContext applicationContext;
 
-    public ArticleServiceImpl(ArticleMapper articleMapper, CategoryMapper categoryMapper, ArticleTagMapper articleTagMapper,TagMapper tagMapper) {
+    public ArticleServiceImpl(ArticleMapper articleMapper, CategoryMapper categoryMapper, ArticleTagMapper articleTagMapper, TagMapper tagMapper) {
         this.articleMapper = articleMapper;
         this.categoryMapper = categoryMapper;
         this.articleTagMapper = articleTagMapper;
@@ -49,15 +49,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
     @Override
     public ArticleVO getArticleVOByArticleId(Long articleId) {
         ArticleDO articleDO = this.articleMapper.selectById(articleId);
-        if(articleDO == null) {
+        if (articleDO == null) {
             return null;
         }
         CategoryDO category = this.categoryMapper.selectById(articleDO.getCategoryId());
         List<ArticleTagDO> articleTagDOList = this.articleTagMapper.selectList(
                 new QueryWrapper<ArticleTagDO>().eq("article_id", articleId));
         List<TagDO> tagList = new ArrayList<>();
-        articleTagDOList.forEach(articleTagDO -> 
-            tagList.add(this.tagMapper.selectById(articleTagDO.getTagId()))
+        articleTagDOList.forEach(articleTagDO ->
+                tagList.add(this.tagMapper.selectById(articleTagDO.getTagId()))
         );
 
         ArticleVO articleVO = new ArticleVO();
@@ -85,7 +85,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
 
         this.articleMapper.insert(articleDO);
 
-        if(articleVO.getTags() != null && articleVO.getTags().size() > 0) {
+        if (articleVO.getTags() != null && articleVO.getTags().size() > 0) {
             articleVO.getTags().forEach(tagDO -> {
                 ArticleTagDO articleTagDO = new ArticleTagDO();
                 articleTagDO.setArticleId(articleDO.getId());
@@ -100,20 +100,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
 
     @Override
     public ArticleVO updateArticleVO(ArticleVO articleVO) {
-        if(articleVO.getId() == null) {
+        if (articleVO.getId() == null) {
             throw new IllegalArgumentException();
         }
-        if(articleVO.getCategory() == null || articleVO.getCategory().getId() == null) {
+        if (articleVO.getCategory() == null || articleVO.getCategory().getId() == null) {
             throw new IllegalArgumentException();
         }
         Long categoryId = articleVO.getCategory().getId();
-        if(this.categoryMapper.selectById(categoryId) == null) {
+        if (this.categoryMapper.selectById(categoryId) == null) {
             throw new IllegalArgumentException();
         }
 
         ArticleService articleServiceImpl = this.applicationContext.getBean("articleServiceImpl", ArticleService.class);
         ArticleVO originalArticleVO = articleServiceImpl.getArticleVOByArticleId(articleVO.getId());
-        if(originalArticleVO == null) {
+        if (originalArticleVO == null) {
             return null;
         }
 
@@ -126,7 +126,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
         QueryWrapper<ArticleTagDO> wrapper = new QueryWrapper<>();
         wrapper.eq("article_id", articleVO.getId());
         this.articleTagMapper.delete(wrapper);
-        if(tags != null && tags.size() > 0) {
+        if (tags != null && tags.size() > 0) {
             tags.forEach(tagDO -> {
                 ArticleTagDO articleTagDO = new ArticleTagDO();
                 articleTagDO.setArticleId(articleVO.getId());
@@ -138,11 +138,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
     }
 
     @Override
-    public Page<ArticleDO> getArticleVOPage(Long pageNum, Long pageSize) {
+    public Page<ArticleDO> getArticlePage(Long pageNum, Long pageSize) {
         Page<ArticleDO> page = new Page<>(pageNum, pageSize);
         page.setMaxLimit(BlogSystemConstants.PAGE_MAX_SIZE);
         QueryWrapper<ArticleDO> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("update_time").orderByDesc("create_time");
+        return this.articleMapper.selectPage(page, wrapper);
+    }
+
+    @Override
+    public Page<ArticleDO> getArticlePage(Long categoryId, Long pageNum, Long pageSize) {
+        Page<ArticleDO> page = new Page<>(pageNum, pageSize);
+        page.setMaxLimit(BlogSystemConstants.PAGE_MAX_SIZE);
+        QueryWrapper<ArticleDO> wrapper = new QueryWrapper<>();
+        wrapper.eq("category_id", categoryId)
+                .orderByDesc("update_time").orderByDesc("create_time");
         return this.articleMapper.selectPage(page, wrapper);
     }
 

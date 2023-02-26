@@ -203,7 +203,17 @@ class ArticleServiceTest {
             "0, 1", "-1, 1", "2, 1", "100, 1",
             "1, 1000", "1, 0", "1, -1"})
     void articlePageGetTest(Long pageNum, Long pageSize) {
-        Page<ArticleDO> articleDOPage = this.articleService.getArticleVOPage(pageNum, pageSize);
+        Page<ArticleDO> articleDOPage = this.articleService.getArticlePage(pageNum, pageSize);
         assertNotNull(articleDOPage);
+    }
+
+    @Order(9)
+    @ParameterizedTest(name = "[{index}]{arguments}分页获取文章测试")
+    @CsvSource({"1, 1, 1", "1, 1, 2", "2, 2, 1",
+            "3, 0, 1", "3, -1, 1", "3, 2, 1", "3, 100, 1",
+            "4, 1, 1000", "100, 1, 0", "-1, 1, -1"})
+    void articlePageWithCateogryGetTest(Long categoryId, Long pageNum, Long pageSize) {
+        Page<ArticleDO> articlePage = this.articleService.getArticlePage(categoryId, pageNum, pageSize);
+        assertNotNull(articlePage);
     }
 }
