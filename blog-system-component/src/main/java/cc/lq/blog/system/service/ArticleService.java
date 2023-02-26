@@ -2,6 +2,7 @@ package cc.lq.blog.system.service;
 
 import cc.lq.blog.system.entity.ArticleDO;
 import cc.lq.blog.system.entity.ArticleVO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -49,5 +50,15 @@ public interface ArticleService extends IService<ArticleDO> {
      * @return 文章VO
      */
     ArticleVO updateArticleVO(ArticleVO articleVO);
+
+    /**
+     * <p>
+     *     分页获取文章
+     * </p>
+     * @param pageNum 当前页码
+     * @param pageSize 页面大小
+     * @return 一页数据
+     */
+    Page<ArticleDO> getArticleVOPage(Long pageNum, Long pageSize);
 
 }

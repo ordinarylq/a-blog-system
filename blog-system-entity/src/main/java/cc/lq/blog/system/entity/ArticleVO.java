@@ -1,5 +1,6 @@
 package cc.lq.blog.system.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -47,10 +48,20 @@ public class ArticleVO {
      */
     private List<TagDO> tags;
 
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
     public ArticleVO() {
     }
 
-    public ArticleVO(Long id, String title, Long userId, String subtitle, String content, CategoryDO category, List<TagDO> tags) {
+    public ArticleVO(Long id, String title, Long userId, String subtitle, String content, CategoryDO category, List<TagDO> tags, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
         this.title = title;
         this.userId = userId;
@@ -58,6 +69,8 @@ public class ArticleVO {
         this.content = content;
         this.category = category;
         this.tags = tags;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Long getId() {
@@ -116,6 +129,22 @@ public class ArticleVO {
         this.tags = tags;
     }
 
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
     public String toString() {
         return "ArticleVO{" +
@@ -126,6 +155,8 @@ public class ArticleVO {
                 ", content='" + content + '\'' +
                 ", category=" + category +
                 ", tags=" + tags +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

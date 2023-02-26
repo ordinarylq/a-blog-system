@@ -2,14 +2,17 @@ package cc.lq.blog.system.service;
 
 import cc.lq.blog.system.entity.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,7 +93,8 @@ class ArticleServiceTest {
 
         CategoryDO categoryDO = this.categoryService.getById(1L);
         ArticleVO articleVO =
-                new ArticleVO(null, "title004", 1L, "subtitle004", "context-add", categoryDO, null);
+                new ArticleVO(null, "title004", 1L, "subtitle004", "context-add", categoryDO,
+                        null, LocalDateTime.now(), LocalDateTime.now());
 
         ArticleVO articleVO1 = this.articleService.addArticleVO(articleVO);
 
@@ -116,7 +120,8 @@ class ArticleServiceTest {
         CategoryDO categoryDO = this.categoryService.getById(1L);
         List<TagDO> tagDOList = this.tagService.list();
         ArticleVO articleVO =
-                new ArticleVO(null, "title004", 1L, null, "context-add", categoryDO, tagDOList);
+                new ArticleVO(null, "title004", 1L, null, "context-add", categoryDO,
+                        tagDOList, LocalDateTime.now(), LocalDateTime.now());
 
         ArticleVO articleVO1 = this.articleService.addArticleVO(articleVO);
 
@@ -143,7 +148,8 @@ class ArticleServiceTest {
 
         CategoryDO categoryDO = this.categoryService.getById(2L);
         List<TagDO> tagDOList = this.tagService.list();
-        ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, tagDOList);
+        ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated",
+                "context-add", categoryDO, tagDOList, LocalDateTime.now(), LocalDateTime.now());
 
         ArticleVO articleVO = this.articleService.updateArticleVO(newArticleVO);
         assertNotNull(articleVO);
@@ -169,7 +175,7 @@ class ArticleServiceTest {
     @DisplayName("更新文章测试2")
     void updateArticleTest2() {
         CategoryDO categoryDO = this.categoryService.getById(2L);
-        ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, null);
+        ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, null, LocalDateTime.now(), LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
 
@@ -177,7 +183,7 @@ class ArticleServiceTest {
     @Test
     @DisplayName("更新文章测试3")
     void updateArticleTest3() {
-        ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", null, null);
+        ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", null, null, LocalDateTime.now(), LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
 
@@ -187,8 +193,17 @@ class ArticleServiceTest {
     void updateArticleTest4() {
         CategoryDO categoryDO = new CategoryDO();
         categoryDO.setId(100L);
-        ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, null);
+        ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, null, LocalDateTime.now(), LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
 
+    @Order(8)
+    @ParameterizedTest(name = "[{index}]{arguments}分页获取文章测试")
+    @CsvSource({"1, 1", "1, 2", "2, 1",
+            "0, 1", "-1, 1", "2, 1", "100, 1",
+            "1, 1000", "1, 0", "1, -1"})
+    void articlePageGetTest(Long pageNum, Long pageSize) {
+        Page<ArticleDO> articleDOPage = this.articleService.getArticleVOPage(pageNum, pageSize);
+        assertNotNull(articleDOPage);
+    }
 }

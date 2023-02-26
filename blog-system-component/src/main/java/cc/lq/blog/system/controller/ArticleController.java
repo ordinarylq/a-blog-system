@@ -2,17 +2,12 @@ package cc.lq.blog.system.controller;
 
 import cc.lq.blog.system.entity.ArticleDO;
 import cc.lq.blog.system.entity.ArticleVO;
-import cc.lq.blog.system.entity.CategoryDO;
-import cc.lq.blog.system.entity.TagDO;
 import cc.lq.blog.system.service.ArticleService;
-import cc.lq.blog.system.service.CategoryService;
-import cc.lq.blog.system.service.TagService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.beans.BeanUtils;
+import cc.lq.blog.system.util.BlogSystemConstants;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * <p>
@@ -67,6 +62,18 @@ public class ArticleController {
             throw new IllegalArgumentException();
         }
         return this.articleService.updateArticleVO(articleVO);
+    }
+
+    @GetMapping(value = "/articles/{pageNum}/{pageSize}",
+            headers = {"X-API-VERSION=1"},
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public Page<ArticleDO> getArticelPage(@PathVariable("pageNum") Long pageNum,
+                                          @PathVariable("pageSize") Long pageSize) {
+        pageNum = (pageNum < 0) ? 1L : pageNum;
+        pageSize = (pageSize < 0) ? BlogSystemConstants.PAGE_DEFAULT_SIZE : pageSize;
+        pageSize = (pageSize > BlogSystemConstants.PAGE_MAX_SIZE) ? BlogSystemConstants.PAGE_MAX_SIZE : pageSize;
+        return this.articleService.getArticleVOPage(pageNum, pageSize);
     }
 
 

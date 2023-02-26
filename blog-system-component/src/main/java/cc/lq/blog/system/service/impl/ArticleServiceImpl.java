@@ -6,7 +6,9 @@ import cc.lq.blog.system.mapper.ArticleTagMapper;
 import cc.lq.blog.system.mapper.CategoryMapper;
 import cc.lq.blog.system.mapper.TagMapper;
 import cc.lq.blog.system.service.ArticleService;
+import cc.lq.blog.system.util.BlogSystemConstants;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
@@ -54,9 +56,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
         List<ArticleTagDO> articleTagDOList = this.articleTagMapper.selectList(
                 new QueryWrapper<ArticleTagDO>().eq("article_id", articleId));
         List<TagDO> tagList = new ArrayList<>();
-        articleTagDOList.forEach(articleTagDO -> {
-            tagList.add(this.tagMapper.selectById(articleTagDO.getTagId()));
-        });
+        articleTagDOList.forEach(articleTagDO -> 
+            tagList.add(this.tagMapper.selectById(articleTagDO.getTagId()))
+        );
 
         ArticleVO articleVO = new ArticleVO();
         articleVO.setCategory(category);
@@ -133,6 +135,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
             });
         }
         return articleVO;
+    }
+
+    @Override
+    public Page<ArticleDO> getArticleVOPage(Long pageNum, Long pageSize) {
+        Page<ArticleDO> page = new Page<>(pageNum, pageSize);
+        page.setMaxLimit(BlogSystemConstants.PAGE_MAX_SIZE);
+        QueryWrapper<ArticleDO> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("update_time").orderByDesc("create_time");
+        return this.articleMapper.selectPage(page, wrapper);
     }
 
     @Override
