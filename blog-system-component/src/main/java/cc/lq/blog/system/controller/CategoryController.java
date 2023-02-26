@@ -1,7 +1,12 @@
 package cc.lq.blog.system.controller;
 
+import cc.lq.blog.system.entity.CategoryVO;
+import cc.lq.blog.system.service.CategoryService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,7 +17,18 @@ import org.springframework.stereotype.Controller;
  * @since 2023-02-17
  */
 @Controller
-@RequestMapping("/categoryDO")
+@RequestMapping("/api")
 public class CategoryController {
+
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @GetMapping("/categories")
+    public List<CategoryVO> getCategories() {
+        return this.categoryService.getAllCategories();
+    }
 
 }
