@@ -5,6 +5,7 @@ import cc.lq.blog.system.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @author Qi Li
  * @since 2023-02-17
  */
-@Controller
+@RestController
 @RequestMapping("/api")
 public class CategoryController {
 

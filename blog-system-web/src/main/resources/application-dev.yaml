@@ -8,7 +8,6 @@ spring:
     # 连接池配置
     hikari:
       connection-timeout: 50000
-      idle-timeout: 300000
       max-lifetime: 900000
       maximum-pool-size: 10
       minimum-idle: 10

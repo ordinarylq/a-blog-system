@@ -41,12 +41,12 @@ public class ArticleVO {
     /**
      * 文章分类
      */
-    private CategoryDO category;
+    private CategoryVO category;
 
     /**
      * 文章标签
      */
-    private List<TagDO> tags;
+    private List<TagVO> tags;
 
     /**
      * 创建时间
@@ -61,7 +61,7 @@ public class ArticleVO {
     public ArticleVO() {
     }
 
-    public ArticleVO(Long id, String title, Long userId, String subtitle, String content, CategoryDO category, List<TagDO> tags, LocalDateTime createTime, LocalDateTime updateTime) {
+    public ArticleVO(Long id, String title, Long userId, String subtitle, String content, CategoryVO category, List<TagVO> tags, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
         this.title = title;
         this.userId = userId;
@@ -113,19 +113,19 @@ public class ArticleVO {
         this.content = content;
     }
 
-    public CategoryDO getCategory() {
+    public CategoryVO getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryDO category) {
+    public void setCategory(CategoryVO category) {
         this.category = category;
     }
 
-    public List<TagDO> getTags() {
+    public List<TagVO> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagDO> tags) {
+    public void setTags(List<TagVO> tags) {
         this.tags = tags;
     }
 

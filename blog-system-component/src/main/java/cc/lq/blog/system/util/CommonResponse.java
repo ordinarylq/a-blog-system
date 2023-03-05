@@ -3,21 +3,23 @@ package cc.lq.blog.system.util;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 
 /**
  * <p>
- *     接口统一响应
+ * 接口统一响应
  * </p>
  *
- * @since 2023-02-18
  * @author Qi Li
  * @see <a href="https://alibaba.github.io/Alibaba-Java-Coding-Guidelines/">Alibaba Java Code Guidelines</a>
  * @see <a href="https://github.com/alibaba/p3c/blob/master/Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C(%E9%BB%84%E5%B1%B1%E7%89%88).pdf">Alibaba Java Develop Manual</a>
+ * @since 2023-02-18
  */
 public class CommonResponse<T> {
     /**
      * HTTP状态码
+     *
      * @see org.springframework.http.HttpStatus
      */
     private Integer statusCode;
@@ -44,8 +46,9 @@ public class CommonResponse<T> {
 
     /**
      * <p>
-     *     Success
+     * Success
      * </p>
+     *
      * @param data 数据
      * @return 统一响应
      */
@@ -56,6 +59,15 @@ public class CommonResponse<T> {
                 BackendErrorStatus.OK.getErrorMessage(),
                 HttpStatus.OK.getReasonPhrase(),
                 data);
+    }
+
+    public static <U> CommonResponse<U> success(U data) {
+        return new CommonResponse<>(
+                HttpStatus.OK.value(),
+                BackendErrorStatus.OK.getErrorCode(),
+                BackendErrorStatus.OK.getErrorMessage(),
+                HttpStatus.OK.getReasonPhrase(),
+                Collections.singletonList(data));
     }
 
     public static CommonResponse<Object> success() {
@@ -69,10 +81,10 @@ public class CommonResponse<T> {
 
     /**
      * <p>
-     *     Fail
+     * Fail
      * </p>
      *
-     * @param httpStatus HTTP状态信息
+     * @param httpStatus         HTTP状态信息
      * @param backendErrorStatus 后端出错信息
      * @return 统一响应
      */

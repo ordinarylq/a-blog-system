@@ -14,6 +14,8 @@ public enum BackendErrorStatus {
 
     CLIENT_ERROR(Series.CLIENT_ERROR,"A0001", "用户端错误"),
     CLIENT_SIGN_UP_ERROR(Series.CLIENT_ERROR,"A0100", "用户注册错误"),
+    CLIENT_REQUEST_ARGUMENT_ERROR(Series.CLIENT_ERROR, "A0400", "用户请求参数错误"),
+    CLIENT_RESOURCE_NOT_FOUND(Series.CLIENT_ERROR, "A0600", "用户资源异常"),
 
     SERVER_ERROR(Series.SERVER_ERROR, "B0001", "系统执行出错"),
     SERVER_TIMEOUT_ERROR(Series.SERVER_ERROR, "B0100", "系统执行超时"),

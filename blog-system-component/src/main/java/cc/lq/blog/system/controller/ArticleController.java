@@ -59,7 +59,7 @@ public class ArticleController {
     )
     public ArticleVO updateArticle(@RequestBody ArticleVO articleVO) {
         if (articleVO.getId() == null || articleVO.getCategory() == null || articleVO.getCategory().getId() == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("参数不能为空");
         }
         return this.articleService.updateArticleVO(articleVO);
     }
@@ -71,7 +71,7 @@ public class ArticleController {
     public Page<ArticleDO> getArticlePage(@PathVariable("pageNum") Long pageNum,
                                           @PathVariable("pageSize") Long pageSize) {
         pageNum = (pageNum < 0) ? 1L : pageNum;
-        pageSize = (pageSize < 0) ? BlogSystemConstants.PAGE_DEFAULT_SIZE : pageSize;
+        pageSize = (pageSize <= 0) ? BlogSystemConstants.PAGE_DEFAULT_SIZE : pageSize;
         pageSize = (pageSize > BlogSystemConstants.PAGE_MAX_SIZE) ? BlogSystemConstants.PAGE_MAX_SIZE : pageSize;
         return this.articleService.getArticlePage(pageNum, pageSize);
     }
@@ -86,7 +86,7 @@ public class ArticleController {
             @PathVariable("pageSize") Long pageSize
     ) {
         pageNum = (pageNum < 0) ? 1L : pageNum;
-        pageSize = (pageSize < 0) ? BlogSystemConstants.PAGE_DEFAULT_SIZE : pageSize;
+        pageSize = (pageSize <= 0) ? BlogSystemConstants.PAGE_DEFAULT_SIZE : pageSize;
         pageSize = (pageSize > BlogSystemConstants.PAGE_MAX_SIZE) ? BlogSystemConstants.PAGE_MAX_SIZE : pageSize;
         return this.articleService.getArticlePage(categoryId, pageNum, pageSize);
     }

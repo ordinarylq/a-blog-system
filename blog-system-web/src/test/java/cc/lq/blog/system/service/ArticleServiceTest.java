@@ -1,6 +1,7 @@
 package cc.lq.blog.system.service;
 
 import cc.lq.blog.system.entity.*;
+import cc.lq.blog.system.exception.ResourceNotFoundException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.*;
@@ -14,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,7 +43,6 @@ class ArticleServiceTest {
 
     @Autowired
     private CategoryService categoryService;
-
 
     @Autowired
     private TagService tagService;
@@ -92,8 +93,9 @@ class ArticleServiceTest {
         assertNull(one);
 
         CategoryDO categoryDO = this.categoryService.getById(1L);
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
         ArticleVO articleVO =
-                new ArticleVO(null, "title004", 1L, "subtitle004", "context-add", categoryDO,
+                new ArticleVO(null, "title004", 1L, "subtitle004", "context-add",categoryVO,
                         null, LocalDateTime.now(), LocalDateTime.now());
 
         ArticleVO articleVO1 = this.articleService.addArticleVO(articleVO);
@@ -118,10 +120,11 @@ class ArticleServiceTest {
         assertNull(one);
 
         CategoryDO categoryDO = this.categoryService.getById(1L);
-        List<TagDO> tagDOList = this.tagService.list();
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        List<TagVO> tagVOList = this.tagService.list().stream().map(tagDO -> new TagVO(tagDO.getId(), tagDO.getTagName())).collect(Collectors.toList());
         ArticleVO articleVO =
-                new ArticleVO(null, "title004", 1L, null, "context-add", categoryDO,
-                        tagDOList, LocalDateTime.now(), LocalDateTime.now());
+                new ArticleVO(null, "title004", 1L, null, "context-add", categoryVO,
+                        tagVOList, LocalDateTime.now(), LocalDateTime.now());
 
         ArticleVO articleVO1 = this.articleService.addArticleVO(articleVO);
 
@@ -147,9 +150,10 @@ class ArticleServiceTest {
 
 
         CategoryDO categoryDO = this.categoryService.getById(2L);
-        List<TagDO> tagDOList = this.tagService.list();
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        List<TagVO> tagVOList = this.tagService.list().stream().map(tagDO -> new TagVO(tagDO.getId(), tagDO.getTagName())).collect(Collectors.toList());
         ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated",
-                "context-add", categoryDO, tagDOList, LocalDateTime.now(), LocalDateTime.now());
+                "context-add", categoryVO, tagVOList, LocalDateTime.now(), LocalDateTime.now());
 
         ArticleVO articleVO = this.articleService.updateArticleVO(newArticleVO);
         assertNotNull(articleVO);
@@ -175,7 +179,8 @@ class ArticleServiceTest {
     @DisplayName("更新文章测试2")
     void updateArticleTest2() {
         CategoryDO categoryDO = this.categoryService.getById(2L);
-        ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, null, LocalDateTime.now(), LocalDateTime.now());
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryVO, null, LocalDateTime.now(), LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
 
@@ -193,8 +198,9 @@ class ArticleServiceTest {
     void updateArticleTest4() {
         CategoryDO categoryDO = new CategoryDO();
         categoryDO.setId(100L);
-        ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryDO, null, LocalDateTime.now(), LocalDateTime.now());
-        assertThrows(IllegalArgumentException.class, () -> this.articleService.updateArticleVO(newArticleVO));
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryVO, null, LocalDateTime.now(), LocalDateTime.now());
+        assertThrows(ResourceNotFoundException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
 
     @Order(8)
