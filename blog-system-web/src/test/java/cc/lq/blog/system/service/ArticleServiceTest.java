@@ -58,7 +58,7 @@ class ArticleServiceTest {
         assertEquals("技术", article.getCategory().getCategoryName());
         assertEquals(2, article.getTags().size());
 
-        assertNull(this.articleService.getArticleVOByArticleId(100L));
+        assertThrows(ResourceNotFoundException.class, () -> this.articleService.getArticleVOByArticleId(100L));
         assertNotNull(this.articleService.getArticleVOByArticleId(3L));
     }
 
@@ -214,12 +214,19 @@ class ArticleServiceTest {
     }
 
     @Order(9)
-    @ParameterizedTest(name = "[{index}]{arguments}分页获取文章测试")
-    @CsvSource({"1, 1, 1", "1, 1, 2", "2, 2, 1",
-            "3, 0, 1", "3, -1, 1", "3, 2, 1", "3, 100, 1",
-            "4, 1, 1000", "100, 1, 0", "-1, 1, -1"})
-    void articlePageWithCateogryGetTest(Long categoryId, Long pageNum, Long pageSize) {
+    @ParameterizedTest(name = "[{index}]{arguments}分页获取文章测试1")
+    @CsvSource({"1, 1, 1", "1, 1, 2", "3, 0, 1", "3, -1, 1", })
+    void articlePageWithCategoryGetTest1(Long categoryId, Long pageNum, Long pageSize) {
         Page<ArticleDO> articlePage = this.articleService.getArticlePage(categoryId, pageNum, pageSize);
         assertNotNull(articlePage);
+    }
+
+    @Order(9)
+    @ParameterizedTest(name = "[{index}]{arguments}分页获取文章测试2")
+    @CsvSource({"2, 2, 1", "3, 2, 1", "3, 100, 1",
+            "4, 1, 1000", "100, 1, 0", "-1, 1, -1"})
+    void articlePageWithCategoryGetTest2(Long categoryId, Long pageNum, Long pageSize) {
+        assertThrows(ResourceNotFoundException.class,
+                () -> this.articleService.getArticlePage(categoryId, pageNum, pageSize));
     }
 }

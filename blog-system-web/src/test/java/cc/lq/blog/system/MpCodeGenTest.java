@@ -13,12 +13,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * @author qili
  * @create 2023-02-17-18:26
  */
 
+@ActiveProfiles({"test"})
 @SpringBootTest
 public class MpCodeGenTest {
 
@@ -30,6 +33,7 @@ public class MpCodeGenTest {
 
     @Test
     @Disabled
+    @DirtiesContext
     void generateCode() {
         DataSourceConfig.Builder dataSourceConfigBuilder = new DataSourceConfig.Builder(
                 "jdbc:mysql://localhost:3306/a_blog_system?characterEncoding=utf-8&serverTimezone=GMT%2B8",
