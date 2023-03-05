@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +29,7 @@ public class MpCodeGenTest {
     private String path;
 
     @Test
+    @Disabled
     void generateCode() {
         DataSourceConfig.Builder dataSourceConfigBuilder = new DataSourceConfig.Builder(
                 "jdbc:mysql://localhost:3306/a_blog_system?characterEncoding=utf-8&serverTimezone=GMT%2B8",
