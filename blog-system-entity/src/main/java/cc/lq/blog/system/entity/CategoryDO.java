@@ -21,6 +21,11 @@ public class CategoryDO extends BaseEntity {
     private String categoryName;
 
     /**
+     * 路由路径
+     */
+    private String routerPath;
+
+    /**
      * 分类排序
      */
     private Integer categoryOrder;
@@ -48,6 +53,14 @@ public class CategoryDO extends BaseEntity {
         this.categoryOrder = categoryOrder;
     }
 
+    public String getRouterPath() {
+        return routerPath;
+    }
+
+    public void setRouterPath(String routerPath) {
+        this.routerPath = routerPath;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -59,10 +72,10 @@ public class CategoryDO extends BaseEntity {
     @Override
     public String toString() {
         return "CategoryDO{" +
-                super.toString() +
-                "categoryName = " + categoryName +
-                ", categoryOrder = " + categoryOrder +
-                ", deleted = " + deleted +
-                "}";
+                "categoryName='" + categoryName + '\'' +
+                ", routerPath='" + routerPath + '\'' +
+                ", categoryOrder=" + categoryOrder +
+                ", deleted=" + deleted +
+                "} " + super.toString();
     }
 }

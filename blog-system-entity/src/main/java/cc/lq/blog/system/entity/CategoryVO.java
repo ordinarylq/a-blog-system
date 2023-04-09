@@ -20,6 +20,11 @@ public class CategoryVO {
     private String categoryName;
 
     /**
+     * 路由路径
+     */
+    private String routerPath;
+
+    /**
      * 分类排序
      */
     private Integer categoryOrder;
@@ -27,9 +32,10 @@ public class CategoryVO {
     public CategoryVO() {
     }
 
-    public CategoryVO(Long id, String categoryName, Integer categoryOrder) {
+    public CategoryVO(Long id, String categoryName, String routerPath,Integer categoryOrder) {
         this.id = id;
         this.categoryName = categoryName;
+        this.routerPath = routerPath;
         this.categoryOrder = categoryOrder;
     }
 
@@ -49,6 +55,14 @@ public class CategoryVO {
         this.categoryName = categoryName;
     }
 
+    public String getRouterPath() {
+        return routerPath;
+    }
+
+    public void setRouterPath(String routerPath) {
+        this.routerPath = routerPath;
+    }
+
     public Integer getCategoryOrder() {
         return categoryOrder;
     }
@@ -62,6 +76,7 @@ public class CategoryVO {
         return "CategoryVO{" +
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
+                ", routerPath='" + routerPath + '\'' +
                 ", categoryOrder=" + categoryOrder +
                 '}';
     }

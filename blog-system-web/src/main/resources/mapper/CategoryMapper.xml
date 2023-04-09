@@ -8,6 +8,7 @@
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <result column="category_name" property="categoryName" />
+        <result column="router_path" property="routerPath" />
         <result column="category_order" property="categoryOrder" />
         <result column="is_deleted" property="deleted" />
     </resultMap>
@@ -17,7 +18,7 @@
         id,
         create_time,
         update_time,
-        category_name, category_order, is_deleted
+        category_name, router_path, category_order, is_deleted
     </sql>
 
 </mapper>

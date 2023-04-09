@@ -21,6 +21,7 @@ CREATE TABLE `blog_category`
 (
     `id`             bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '分类id',
     `category_name`  varchar(45)     NOT NULL COMMENT '分类名称',
+    `router_path`    varchar(100)    NOT NULL COMMENT '路由路径',
     `category_order` int             NOT NULL COMMENT '分类排序',
     `create_time`    datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
