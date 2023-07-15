@@ -6,31 +6,25 @@ on:
   pull_request:
 
 jobs:
-  tests:
-    name: Unit Tests
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'temurin'
-          cache: maven
-      - name: Run Tests
+      - name: Tests with Maven
         run: |
           sudo mkdir -p /var/log/blog-system
           sudo mvn -B test
-
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up JDK 8
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '8'
-#          distribution: 'temurin'
-#          cache: maven
-#      - name: Build with Maven
-#        run: mvn -B --skipTests package --file pom.xml
+      - name: Package with Maven
+        run: sudo mvn -B package -DskipTests --file pom.xml
