@@ -68,6 +68,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push-image
+    environment: azure-linux
     steps:
       - name: Configure SSH
         run: |
