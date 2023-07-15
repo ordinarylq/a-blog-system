@@ -19,7 +19,7 @@ jobs:
           cache: maven
       - name: Run Tests
         run: |
-          sudo mkdir /var/log/blog-system
+          sudo mkdir -p /var/log/blog-system
           mvn -B test
 
 #  build:
