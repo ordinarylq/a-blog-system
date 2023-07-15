@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://a-blog-system-db.mysql.database.azure.com:3306/a_blog_system?characterEncoding=utf-8&serverTimezone=GMT%2B8
-    username: ${azure-mysql-db-user}
-    password: ${azure-mysql-db-password}
+    username: ${AZURE_MYSQL_DB_USER}
+    password: ${AZURE_MYSQL_DB_PASSWORD}
     type: com.zaxxer.hikari.HikariDataSource
     # 连接池配置
     hikari:
