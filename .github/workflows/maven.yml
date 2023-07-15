@@ -20,7 +20,7 @@ jobs:
       - name: Run Tests
         run: |
           sudo mkdir -p /var/log/blog-system
-          mvn -B test
+          sudo mvn -B test
 
 #  build:
 #    runs-on: ubuntu-latest
