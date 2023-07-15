@@ -43,7 +43,7 @@ jobs:
         run: |
           sudo mvn -B package -DskipTests --file pom.xml
           sudo mkdir -p blog-system-web/target/extracted
-          java -Djarmode=layertools -jar blog-system-web/target/*.jar extract --destination blog-system-web/target/extracted
+          sudo java -Djarmode=layertools -jar blog-system-web/target/*.jar extract --destination blog-system-web/target/extracted
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
