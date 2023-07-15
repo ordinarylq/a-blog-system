@@ -9,8 +9,8 @@ values ('title001', 1, 'subtitile001', 'contextcontextcontextcontext', 1),
 -- -----------------------------
 -- blog_category
 -- -----------------------------
-insert into blog_category(category_name, category_order)
-VALUES ('技术', 1), ('算法', 2), ('项目', 3), ('工具', 4);
+insert into blog_category(category_name, router_path, category_order)
+VALUES ('技术', 'tech', 1), ('算法', 'algorithm',2), ('项目', 'project', 3), ('工具', 'tool', 4);
 
 -- -----------------------------
 -- blog_tag

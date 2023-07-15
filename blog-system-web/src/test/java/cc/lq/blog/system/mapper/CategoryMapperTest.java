@@ -35,6 +35,7 @@ class CategoryMapperTest {
         CategoryDO categoryDO = this.categoryMapper.selectById(1L);
         assertNotNull(categoryDO);
         assertEquals("技术", categoryDO.getCategoryName());
+        assertEquals("tech", categoryDO.getRouterPath());
         assertEquals(1, categoryDO.getCategoryOrder());
     }
 
@@ -53,6 +54,7 @@ class CategoryMapperTest {
     void addCategoryTest() {
         CategoryDO categoryDO = new CategoryDO();
         categoryDO.setCategoryName("方法论");
+        categoryDO.setRouterPath("methodology");
         categoryDO.setCategoryOrder(5);
 
         int result = this.categoryMapper.insert(categoryDO);

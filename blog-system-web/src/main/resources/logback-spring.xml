@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="120 seconds">
     <!-- 1.property -->
     <!--Linux的日志位置-->
-    <property name="log.path" value="/var/log/a-blog-system/log" />
+    <property name="log.path" value="/var/log/blog-system" />
 
     <!-- 2.日志格式和颜色渲染 -->
     <!-- 彩色日志依赖的渲染类 -->

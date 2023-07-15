@@ -1,0 +1,36 @@
+name: Maven Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - id: cache-path
+        name: Maven Cache Path
+        run: |
+          echo "dir=$(mvn help:evaluate -Dexpression=settings.localRepository | grep 'm2/repository')" >> $GITHUB_OUTPUT
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ steps.cache-path.outputs.dir }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Tests with Maven
+        run: |
+          sudo mkdir -p /var/log/blog-system
+          sudo mvn -B test
+      - name: Package with Maven
+        run: sudo mvn -B package -DskipTests --file pom.xml

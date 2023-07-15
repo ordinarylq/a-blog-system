@@ -12,9 +12,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +29,12 @@ import java.util.List;
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> implements ArticleService, ApplicationContextAware {
+public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> implements ArticleService {
     private final ArticleMapper articleMapper;
     private final CategoryMapper categoryMapper;
     private final ArticleTagMapper articleTagMapper;
     private final TagMapper tagMapper;
 
-    private ApplicationContext applicationContext;
 
     public ArticleServiceImpl(ArticleMapper articleMapper, CategoryMapper categoryMapper, ArticleTagMapper articleTagMapper, TagMapper tagMapper) {
         this.articleMapper = articleMapper;
@@ -162,15 +158,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, ArticleDO> im
         QueryWrapper<ArticleDO> wrapper = new QueryWrapper<>();
         wrapper.eq("category_id", categoryId)
                 .orderByDesc("update_time").orderByDesc("create_time");
-        Page<ArticleDO> articleDOPage = this.articleMapper.selectPage(page, wrapper);
-        if(articleDOPage.getRecords().size() == 0) {
-            throw new ResourceNotFoundException("未找到指定条件的文章");
-        }
-        return articleDOPage;
+        return this.articleMapper.selectPage(page, wrapper);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 }

@@ -93,7 +93,7 @@ class ArticleServiceTest {
         assertNull(one);
 
         CategoryDO categoryDO = this.categoryService.getById(1L);
-        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getRouterPath(),categoryDO.getCategoryOrder());
         ArticleVO articleVO =
                 new ArticleVO(null, "title004", 1L, "subtitle004", "context-add",categoryVO,
                         null, LocalDateTime.now(), LocalDateTime.now());
@@ -120,7 +120,7 @@ class ArticleServiceTest {
         assertNull(one);
 
         CategoryDO categoryDO = this.categoryService.getById(1L);
-        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getRouterPath(), categoryDO.getCategoryOrder());
         List<TagVO> tagVOList = this.tagService.list().stream().map(tagDO -> new TagVO(tagDO.getId(), tagDO.getTagName())).collect(Collectors.toList());
         ArticleVO articleVO =
                 new ArticleVO(null, "title004", 1L, null, "context-add", categoryVO,
@@ -150,7 +150,7 @@ class ArticleServiceTest {
 
 
         CategoryDO categoryDO = this.categoryService.getById(2L);
-        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getRouterPath(), categoryDO.getCategoryOrder());
         List<TagVO> tagVOList = this.tagService.list().stream().map(tagDO -> new TagVO(tagDO.getId(), tagDO.getTagName())).collect(Collectors.toList());
         ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated",
                 "context-add", categoryVO, tagVOList, LocalDateTime.now(), LocalDateTime.now());
@@ -179,7 +179,7 @@ class ArticleServiceTest {
     @DisplayName("更新文章测试2")
     void updateArticleTest2() {
         CategoryDO categoryDO = this.categoryService.getById(2L);
-        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getRouterPath(), categoryDO.getCategoryOrder());
         ArticleVO newArticleVO = new ArticleVO(null, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryVO, null, LocalDateTime.now(), LocalDateTime.now());
         assertThrows(IllegalArgumentException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
@@ -198,7 +198,7 @@ class ArticleServiceTest {
     void updateArticleTest4() {
         CategoryDO categoryDO = new CategoryDO();
         categoryDO.setId(100L);
-        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getCategoryOrder());
+        CategoryVO categoryVO = new CategoryVO(categoryDO.getId(), categoryDO.getCategoryName(), categoryDO.getRouterPath(), categoryDO.getCategoryOrder());
         ArticleVO newArticleVO = new ArticleVO(1L, "title001-updated", 1L, "subtitle001-updated", "context-add", categoryVO, null, LocalDateTime.now(), LocalDateTime.now());
         assertThrows(ResourceNotFoundException.class, () -> this.articleService.updateArticleVO(newArticleVO));
     }
@@ -226,7 +226,6 @@ class ArticleServiceTest {
     @CsvSource({"2, 2, 1", "3, 2, 1", "3, 100, 1",
             "4, 1, 1000", "100, 1, 0", "-1, 1, -1"})
     void articlePageWithCategoryGetTest2(Long categoryId, Long pageNum, Long pageSize) {
-        assertThrows(ResourceNotFoundException.class,
-                () -> this.articleService.getArticlePage(categoryId, pageNum, pageSize));
+        assertEquals(0, this.articleService.getArticlePage(categoryId, pageNum, pageSize).getRecords().size());
     }
 }
