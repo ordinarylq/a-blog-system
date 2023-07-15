@@ -226,7 +226,6 @@ class ArticleServiceTest {
     @CsvSource({"2, 2, 1", "3, 2, 1", "3, 100, 1",
             "4, 1, 1000", "100, 1, 0", "-1, 1, -1"})
     void articlePageWithCategoryGetTest2(Long categoryId, Long pageNum, Long pageSize) {
-        assertThrows(ResourceNotFoundException.class,
-                () -> this.articleService.getArticlePage(categoryId, pageNum, pageSize));
+        assertEquals(0, this.articleService.getArticlePage(categoryId, pageNum, pageSize).getRecords().size());
     }
 }
