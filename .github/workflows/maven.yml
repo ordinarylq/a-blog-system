@@ -3,6 +3,7 @@ name: Maven Build
 on:
   push:
     branches: [ "dev", "main" ]
+  pull_request:
 
 jobs:
   tests:
@@ -17,7 +18,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run Tests
-        run:
+        run: |
           mkdir /var/log/blog-system
           mvn -B test
 
