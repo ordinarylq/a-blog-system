@@ -42,7 +42,7 @@ jobs:
       - name: Package with Maven
         run: |
           sudo mvn -B package -DskipTests --file pom.xml
-          mkdir -p blog-system-web/target/extracted
+          sudo mkdir -p blog-system-web/target/extracted
           java -Djarmode=layertools -jar blog-system-web/target/*.jar extract --destination blog-system-web/target/extracted
 
       - name: Log in to the Container registry
