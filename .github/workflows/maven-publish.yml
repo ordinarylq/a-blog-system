@@ -112,5 +112,5 @@ jobs:
       - name: Pull latest image
         run: ssh production 'sudo docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
       - name: Run container
-        run: ssh production 'sudo docker run -d -p 443:9898 --name ${{ env.CONTAINER_NAME }} --env-file /home/azureuser/a-blog-system/env.list ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
+        run: ssh production 'sudo docker run -d -p 9898:9898 --name ${{ env.CONTAINER_NAME }} --env-file /home/azureuser/a-blog-system/env.list ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
 
