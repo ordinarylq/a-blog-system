@@ -7,6 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  CONTAINER_NAME: a-blog-system
 
 jobs:
   build-and-push-image:
@@ -86,14 +87,30 @@ jobs:
           SSH_USER: ${{ secrets.AZURE_VM_USERNAME }}
           SSH_KEY: ${{ secrets.AZURE_VM_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.AZURE_VM_HOST }}
-      - name: Stop and rename docker container
-        run: ssh production 'sudo docker stop a-blog-system && sudo docker rename a-blog-system a-blog-system_bak'
+      - name: Check container
+        id: check-container
+        run: |
+          if [ "$(sudo docker ps -a | grep -w -c ${{ env.CONTAINER_NAME }})" -gt 1]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else 
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Check image
+        id: check-image
+        run: |
+          if [ "$(sudo docker image ls | grep -w -c ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }})" -gt 1 ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else 
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Stop and remove docker container
+        if: steps.check-container.outputs.exists == 'true'
+        run: ssh production 'sudo docker stop ${{ env.CONTAINER_NAME }} && sudo docker rm ${{ env.CONTAINER_NAME }}'
       - name: Remove original image
+        if: steps.check-image.outputs.exists == 'true'
         run: ssh production 'sudo docker rmi ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
       - name: Pull latest image
         run: ssh production 'sudo docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
       - name: Run container
-        run: ssh production 'sudo docker run -d -p 443:9898 --name a-blog-system --env-file /home/azureuser/a-blog-system/env.list ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
-      - name: Remove original container
-        run: ssh production 'sudo docker rm a-blog-system_bak'
+        run: ssh production 'sudo docker run -d -p 443:9898 --name ${{ env.CONTAINER_NAME }} --env-file /home/azureuser/a-blog-system/env.list ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
 
