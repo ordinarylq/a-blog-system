@@ -86,9 +86,14 @@ jobs:
           SSH_USER: ${{ secrets.AZURE_VM_USERNAME }}
           SSH_KEY: ${{ secrets.AZURE_VM_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.AZURE_VM_HOST }}
-      - name: Pull the docker image
-        run: ssh production 'echo 'Hello, Azure!''
-#        run: ssh production 'sudo docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
-#      - name: Stop the docker image
-#        run: ssh production 'sudo docker stop ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
-#
+      - name: Stop and rename docker container
+        run: ssh production 'sudo docker stop a-blog-system && sudo docker rename a-blog-system a-blog-system_bak'
+      - name: Remove original image
+        run: ssh production 'sudo docker rmi ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
+      - name: Pull latest image
+        run: ssh production 'sudo docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
+      - name: Run container
+        run: ssh production 'sudo docker run -d -p 443:9898 --name a-blog-system --env-file /home/azureuser/a-blog-system/env.list ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest'
+      - name: Remove original container
+        run: ssh production 'sudo docker rm a-blog-system_bak'
+
